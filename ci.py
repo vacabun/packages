@@ -130,20 +130,28 @@ def check_commit_id_exists(repo_url, commit_id):
     parts = repo_url.split("/")
     user = parts[-2]
     repo = parts[-1]
-    url = f"https://api.github.com/repos/{user}/{repo}/commits"
-    headers = {
-        "Accept": "application/vnd.github.v3+json"
-    }
+
+    command = ['git', 'ls-remote', '--heads', repo_url]
+    refs = subprocess.check_output(command).decode('utf-8').splitlines()
+
+    branches = [ref.split('/')[-1] for ref in refs]
+
     commit_id_list = []
-    while url:
-        response = requests.get(url, headers=headers)
-        commits = response.json()
-        for commit in commits:
-            commit_id_list.append(commit['sha'])
-        if 'next' in response.links:
-            url = response.links['next']['url']
-        else:
-            url = None
+    for branch in branches:
+        url = f"https://api.github.com/repos/{user}/{repo}/commits?sha={branch}"
+        headers = {
+            "Accept": "application/vnd.github.v3+json"
+        }
+        commit_id_list = []
+        while url:
+            response = requests.get(url, headers=headers)
+            commits = response.json()
+            for commit in commits:
+                commit_id_list.append(commit['sha'])
+            if 'next' in response.links:
+                url = response.links['next']['url']
+            else:
+                url = None
     if commit_id in commit_id_list:
         return True
     else:
