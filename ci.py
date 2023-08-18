@@ -122,7 +122,7 @@ def check_branch_exists(git_url, branch_name):
         return False
 
 
-def check_commit_id_exists(repo_url, commit_id):
+def check_commit_sha_exists(repo_url, commit_sha):
     """Check if sha exists."""
 
     if repo_url.endswith('.git'):
@@ -131,33 +131,14 @@ def check_commit_id_exists(repo_url, commit_id):
     user = parts[-2]
     repo = parts[-1]
 
-    command = ['git', 'ls-remote', '--heads', repo_url]
-    refs = subprocess.check_output(command).decode('utf-8').splitlines()
-
-    branches = [ref.split('/')[-1] for ref in refs]
-
-    commit_id_list = []
-    for branch in branches:
-        url = f"https://api.github.com/repos/{user}/{repo}/commits?sha={branch}"
-        token = os.environ.get("GITHUB_TOKEN")
-        headers = {
-            "Authorization": f"token {token}",
-            "Accept": "application/vnd.github.v3+json"
-        }
-        commit_id_list = []
-        while url:
-            response = requests.get(url, headers=headers)
-            commits = response.json()
-            for commit in commits:
-                commit_id_list.append(commit['sha'])
-            if 'next' in response.links:
-                url = response.links['next']['url']
-            else:
-                url = None
-    if commit_id in commit_id_list:
-        return True
-    else:
-        return False
+    url = f"https://api.github.com/repos/{user}/{repo}/git/commits/{commit_sha}"
+    token = os.environ.get("GITHUB_TOKEN")
+    headers = {
+        "Authorization": f"token {token}",
+        "Accept": "application/vnd.github.v3+json"
+    }
+    response = requests.get(url, headers=headers)
+    return response.status_code == 200
 
 
 def is_file_link_with_extension(url):
@@ -210,8 +191,8 @@ def json_file_content_check(package_info):
             ver_sha = package_info['site'][i]['VER_SHA']
             print(f"VER_SHA: {ver_sha}")
             if not check_branch_exists(package_url, ver_sha):
-                print(f"The branch '{ver_sha}' not exists, maybe a commit id.")
-                if not check_commit_id_exists(package_url, ver_sha):
+                print(f"The branch '{ver_sha}' not exists, maybe a commit sha.")
+                if not check_commit_sha_exists(package_url, ver_sha):
                     print('SHA is not exists.')
                     return False
         else:
