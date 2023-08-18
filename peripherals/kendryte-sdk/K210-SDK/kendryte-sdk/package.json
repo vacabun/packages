@@ -22,39 +22,34 @@
   "site": [
     {
       "version": "v0.5.2",
-      "URL": "https://github.com/RT-Thread-packages/kendryte_sdk/archive/v0.5.2.zip",
+      "URL": "https://github.com/RT-Thread-packages/kendryte_sdk.git",
       "filename": "kendryte-sdk-0.5.2.zip",
       "VER_SHA": "5470174f7552d756b640b72e05ccd894780c6592"
     },
     {
       "version": "v0.5.3",
       "URL": "https://github.com/RT-Thread-packages/kendryte_sdk/archive/v0.5.3.zip",
-      "filename": "kendryte-sdk-0.5.3.zip",
-      "VER_SHA": "v0.5.3"
+      "filename": "kendryte-sdk-0.5.3.zip"
     },
     {
       "version": "v0.5.4",
       "URL": "https://github.com/RT-Thread-packages/kendryte_sdk/archive/v0.5.4.zip",
-      "filename": "kendryte-sdk-0.5.4.zip",
-      "VER_SHA": "v0.5.4"
+      "filename": "kendryte-sdk-0.5.4.zip"
     },
     {
       "version": "v0.5.5",
       "URL": "https://github.com/RT-Thread-packages/kendryte_sdk/archive/v0.5.5.zip",
-      "filename": "kendryte-sdk-0.5.5.zip",
-      "VER_SHA": "v0.5.5"
+      "filename": "kendryte-sdk-0.5.5.zip"
     },
     {
       "version": "v0.5.6",
       "URL": "https://github.com/RT-Thread-packages/kendryte_sdk/archive/v0.5.6.zip",
-      "filename": "kendryte-sdk-0.5.6.zip",
-      "VER_SHA": "v0.5.6"
+      "filename": "kendryte-sdk-0.5.6.zip"
     },
     {
       "version": "v0.5.7",
       "URL": "https://github.com/RT-Thread-packages/kendryte_sdk/archive/v0.5.7.zip",
-      "filename": "kendryte-sdk-0.5.7.zip",
-      "VER_SHA": "v0.5.7"
+      "filename": "kendryte-sdk-0.5.7.zip"
     },
     {
       "version": "latest",
