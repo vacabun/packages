@@ -139,7 +139,9 @@ def check_commit_id_exists(repo_url, commit_id):
     commit_id_list = []
     for branch in branches:
         url = f"https://api.github.com/repos/{user}/{repo}/commits?sha={branch}"
+        token = os.environ.get("GITHUB_TOKEN")
         headers = {
+            "Authorization": f"token {token}",
             "Accept": "application/vnd.github.v3+json"
         }
         commit_id_list = []
