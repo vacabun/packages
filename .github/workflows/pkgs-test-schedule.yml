@@ -1,14 +1,6 @@
-name: Packages Test
+name: Schedule Packages Test
 
-# Controls when the action will run. Triggers the workflow on push or pull request
-# events but only for the master branch
 on:
-    push:
-        branches:
-          - master
-    pull_request:
-        branches:
-            - master
     workflow_dispatch:
     # Runs at 00:00 UTC on the 1, 16 and 31th of every month、
     schedule:
@@ -25,22 +17,7 @@ concurrency:
     cancel-in-progress: false # wait for finish.
 
 jobs:
-    change_pull_request:
-        if: ${{ github.event_name == 'pull_request' }}
-        uses: RT-Thread/pkgs-test/.github/workflows/pkgs-action.yml@main
-        with:
-            package-append-res: true
-            deploy-pages: false
-
-    change_push:
-        if: ${{ github.event_name == 'push' }}
-        uses: RT-Thread/pkgs-test/.github/workflows/pkgs-action.yml@main
-        with:
-            package-append-res: true
-            deploy-pages: true
-
     master-stm32h750-artpi-test:
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'}}
         uses: RT-Thread/pkgs-test/.github/workflows/pkgs-action.yml@main
         with:
             bsps: stm32/stm32h750-artpi:sourcery-arm
@@ -51,7 +28,6 @@ jobs:
             check-errors: false
 
     master-k210-test:
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'}}
         needs: master-stm32h750-artpi-test
         uses: RT-Thread/pkgs-test/.github/workflows/pkgs-action.yml@main
         with:
@@ -63,7 +39,6 @@ jobs:
             check-errors: false
 
     master-qemu-vexpress-a9-test:
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'}}
         needs: master-k210-test
         uses: RT-Thread/pkgs-test/.github/workflows/pkgs-action.yml@main
         with:
@@ -76,7 +51,6 @@ jobs:
 
     v4_1_1-stm32h750-artpi-test:
         needs: master-qemu-vexpress-a9-test
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'}}
         uses: RT-Thread/pkgs-test/.github/workflows/pkgs-action.yml@main
         with:
             bsps: stm32/stm32h750-artpi:sourcery-arm
@@ -87,7 +61,6 @@ jobs:
             check-errors: false
 
     v4_1_1-k210-test:
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'}}
         needs: v4_1_1-stm32h750-artpi-test
         uses: RT-Thread/pkgs-test/.github/workflows/pkgs-action.yml@main
         with:
@@ -99,7 +72,6 @@ jobs:
             check-errors: false
 
     v4_1_1-qemu-vexpress-a9-test:
-        if: ${{ github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'}}
         needs: v4_1_1-k210-test
         uses: RT-Thread/pkgs-test/.github/workflows/pkgs-action.yml@main
         with:

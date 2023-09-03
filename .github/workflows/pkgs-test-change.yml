@@ -1,0 +1,39 @@
+name: Packages Test
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
+on:
+    push:
+        branches:
+          - master
+    pull_request:
+        branches:
+            - master
+
+# Grant GITHUB_TOKEN the permissions required to make a Pages deployment
+permissions:
+    pages: write      # to deploy to Pages
+    id-token: write   # to verify the deployment originates from an appropriate source
+
+concurrency:
+    group: pkgs-test
+    cancel-in-progress: false # wait for finish.
+
+jobs:
+    change_pull_request:
+        if: ${{ github.event_name == 'pull_request' }}
+        uses: vacabun/pkgs-test/.github/workflows/pkgs-action.yml@change_json_structure
+        with:
+            package-append-res: true
+            deploy-pages: false
+            pkgs-test-repository: vacabun/pkgs-test
+            pkgs-test-branch: change_json_structure
+
+    change_push:
+        if: ${{ github.event_name == 'push' }}
+        uses: vacabun/pkgs-test/.github/workflows/pkgs-action.yml@change_json_structure
+        with:
+            package-append-res: true
+            deploy-pages: true
+            pkgs-test-repository: vacabun/pkgs-test
+            pkgs-test-branch: change_json_structure
